@@ -5,7 +5,7 @@ chat. Paste the prompt below, then append your source document between
 `<source_document>` and `</source_document>` tags. Paste relevant permitted project
 context separately, with its version. Save the answer as Markdown and run the
 checker shown in the workflow README. A chat answer does not execute the checker.
-For prompt hashes and model provenance, use the manual runner in
+For saved prompts and model details, use the manual runner in
 [the runner guide](../workflows/README.md).
 
 # Draft requirements from a workshop

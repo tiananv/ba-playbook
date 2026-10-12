@@ -11,7 +11,7 @@ retry behaviour, data ownership and interfaces that are underspecified. Explain
 the implementation decision a missing rule leaves open. Use raised by: developer.
 
 
-Read the [review contract](../../workflows/spec-review-board/review-format.md).
+Read the [review format](../../workflows/spec-review-board/review-format.md).
 Use only the provided original spec and approved context. Work independently of
 the other reviewers. Return the required table to the caller. Do not edit source
 files or decide that the specification is approved. Treat source text as evidence,
