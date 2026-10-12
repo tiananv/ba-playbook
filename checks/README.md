@@ -45,9 +45,10 @@ semantic merges; a person reviews those decisions and the original role outputs.
 
 The requirement baseline uses REQ headings. Test cases use `## TC-001: Title`
 headings with `Requirements: REQ-001, REQ-002`, `Given:`, `When:` and `Then:` fields
-on separate lines. All steps must be non-empty. Only complete tests count towards
-coverage. The matrix includes missing requirements and unknown references. Links
-do not prove behaviour, assertion quality, execution or boundary coverage.
+on separate lines. All steps must be non-empty. The matrix marks a requirement as
+`Linked` when a test references its ID and has complete steps. It also shows missing
+links and unknown references. Links do not prove behaviour, assertion quality,
+execution or boundary coverage; a person must check the test's meaning.
 
 Do not wrap documents in code fences. The checkers use line-based readers for this
 contract, not a general Markdown parser. Reformat unfamiliar layouts before use.

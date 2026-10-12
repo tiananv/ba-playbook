@@ -86,7 +86,7 @@ def test_review_empty_table_requires_explicit_no_findings():
     assert review_check.check(read(FIXTURES / "review/spec.md"), findings)
 
 
-def test_incomplete_tests_do_not_cover_a_requirement():
+def test_incomplete_tests_do_not_mark_a_requirement_linked():
     """A linked but incomplete case leaves the requirement missing in the matrix."""
     issues, matrix = trace_check.analyse(read(FIXTURES / "trace/requirements.md"), read(FIXTURES / "trace/incomplete.md"))
     assert "| REQ-002 | None | MISSING |" in matrix
@@ -94,7 +94,7 @@ def test_incomplete_tests_do_not_cover_a_requirement():
 
 
 def test_unknown_references_stay_visible_in_matrix():
-    """An invalid test reference remains visible alongside legitimate coverage gaps."""
+    """An invalid test reference remains visible alongside missing links."""
     _, matrix = trace_check.analyse(read(FIXTURES / "trace/requirements.md"), read(FIXTURES / "trace/flawed.md"))
     assert "| REQ-999 | TC-002 | UNKNOWN REQUIREMENT |" in matrix
 
@@ -111,7 +111,10 @@ def test_known_semantic_limits():
     misleading = '## REQ-001: Cancel\nDelete every booking.\nSource: "Show only available slots."'
     assert not quote_check.check("Show only available slots.", misleading)
     irrelevant = "## TC-001: Colour\nRequirements: REQ-001\nGiven: A page.\nWhen: It loads.\nThen: The heading is blue."
-    assert not trace_check.check("## REQ-001: Slots\nShow only available slots.", irrelevant)
+    issues, matrix = trace_check.analyse("## REQ-001: Slots\nShow only available slots.", irrelevant)
+    assert not issues
+    assert "| REQ-001 | TC-001 | Linked |" in matrix
+    assert "A person must check the test's meaning." in matrix
     paraphrases = "| id | section | issue | severity | raised by |\n| --- | --- | --- | --- | --- |\n| F-001 | SEC-001 | No retry rule. | high | tester |\n| F-002 | SEC-001 | Retrying has unspecified behaviour. | high | developer |"
     assert not review_check.check("## SEC-001: Retry\nThe page may retry.", paraphrases)
 

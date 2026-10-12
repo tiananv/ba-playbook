@@ -35,10 +35,10 @@ def analyse(requirements: str, tests: str) -> tuple[list[Issue], str]:
             issues.append(Issue("untraced_requirement", reference, "No complete Given/When/Then test references this requirement."))
     rows = ["# Traceability matrix", "", "| Requirement | Tests | Status |", "| --- | --- | --- |"]
     for reference, test_ids in coverage.items():
-        rows.append(f"| {reference} | {', '.join(test_ids) or 'None'} | {'Covered' if test_ids else 'MISSING'} |")
+        rows.append(f"| {reference} | {', '.join(test_ids) or 'None'} | {'Linked' if test_ids else 'MISSING'} |")
     for reference, test_ids in sorted(unknown.items()):
         rows.append(f"| {reference} | {', '.join(test_ids)} | UNKNOWN REQUIREMENT |")
-    rows.extend(["", "Coverage records references and complete steps. A person must check the test's meaning."])
+    rows.extend(["", "Links record references and complete steps. A person must check the test's meaning."])
     return issues, "\n".join(rows) + "\n"
 
 
