@@ -1,0 +1,327 @@
+{
+  "description": "Fictional test documents check specific errors; they do not measure model accuracy.",
+  "cases": [
+    {
+      "checker": "quote",
+      "source": "quote/transcript.md",
+      "output": "quote/good.md",
+      "expected": [],
+      "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
+      "output_sha256": "547d66de4f37d3f7b0c73554b03ec7cf2c3ba958efea745e035dd561dbdca929",
+      "actual": [],
+      "planted": 0,
+      "caught": 0,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 1,
+      "good_flagged": 0
+    },
+    {
+      "checker": "quote",
+      "source": "quote/transcript.md",
+      "output": "quote/normalised.md",
+      "expected": [],
+      "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
+      "output_sha256": "cf43502ecbb467b7cb048c6a732e1bc394c52bf81e8c0355f7d48ad941794b8a",
+      "actual": [],
+      "planted": 0,
+      "caught": 0,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 1,
+      "good_flagged": 0
+    },
+    {
+      "checker": "quote",
+      "source": "quote/transcript.md",
+      "output": "quote/flawed.md",
+      "expected": [
+        [
+          "missing_source",
+          "REQ-001"
+        ],
+        [
+          "altered_quote",
+          "REQ-002"
+        ],
+        [
+          "source_format",
+          "REQ-003"
+        ]
+      ],
+      "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
+      "output_sha256": "151e2b74e79cab2b65bbfb422f7205e41a06736fb66213f99593fd76c590e45c",
+      "actual": [
+        [
+          "missing_source",
+          "REQ-001"
+        ],
+        [
+          "altered_quote",
+          "REQ-002"
+        ],
+        [
+          "source_format",
+          "REQ-003"
+        ]
+      ],
+      "planted": 3,
+      "caught": 3,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 0,
+      "good_flagged": 0
+    },
+    {
+      "checker": "quote",
+      "source": "quote/transcript.md",
+      "output": "quote/multiple-sources.md",
+      "expected": [
+        [
+          "source_format",
+          "REQ-001"
+        ]
+      ],
+      "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
+      "output_sha256": "194e988361dbed2b15d264fb365869ec0d2dee545128e585b7b69b18d4b4a6cd",
+      "actual": [
+        [
+          "source_format",
+          "REQ-001"
+        ]
+      ],
+      "planted": 1,
+      "caught": 1,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 0,
+      "good_flagged": 0
+    },
+    {
+      "checker": "review",
+      "source": "review/spec.md",
+      "output": "review/good.md",
+      "expected": [],
+      "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
+      "output_sha256": "877832a45205479317d3b15d949c6865565874b80f0a51e93e09204a264379f5",
+      "actual": [],
+      "planted": 0,
+      "caught": 0,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 1,
+      "good_flagged": 0
+    },
+    {
+      "checker": "review",
+      "source": "review/spec.md",
+      "output": "review/no-findings.md",
+      "expected": [],
+      "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
+      "output_sha256": "9e21a19f3443a7a0a9d095ed0d81010e8e7961d1930bd831cea2097de59c9e05",
+      "actual": [],
+      "planted": 0,
+      "caught": 0,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 1,
+      "good_flagged": 0
+    },
+    {
+      "checker": "review",
+      "source": "review/spec.md",
+      "output": "review/flawed.md",
+      "expected": [
+        [
+          "unknown_section",
+          "F-001"
+        ],
+        [
+          "duplicate_finding",
+          "F-003"
+        ]
+      ],
+      "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
+      "output_sha256": "09e43e8ef88ac26d606de969427aa80d81a4af14309cb4da05428e6244bf7007",
+      "actual": [
+        [
+          "unknown_section",
+          "F-001"
+        ],
+        [
+          "duplicate_finding",
+          "F-003"
+        ]
+      ],
+      "planted": 2,
+      "caught": 2,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 0,
+      "good_flagged": 0
+    },
+    {
+      "checker": "review",
+      "source": "review/spec.md",
+      "output": "review/duplicate-id.md",
+      "expected": [
+        [
+          "duplicate_id",
+          "F-001"
+        ]
+      ],
+      "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
+      "output_sha256": "29b9e48e3294b993088d505a7be07829fd6410eb9540e005a87ed19cb8fb2cab",
+      "actual": [
+        [
+          "duplicate_id",
+          "F-001"
+        ]
+      ],
+      "planted": 1,
+      "caught": 1,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 0,
+      "good_flagged": 0
+    },
+    {
+      "checker": "trace",
+      "source": "trace/requirements.md",
+      "output": "trace/good.md",
+      "expected": [],
+      "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
+      "output_sha256": "5609d8175f51f3feac38ff35df2559ac9bb63b34d538a00c1f7ccbf0a935fbff",
+      "actual": [],
+      "planted": 0,
+      "caught": 0,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 1,
+      "good_flagged": 0
+    },
+    {
+      "checker": "trace",
+      "source": "trace/requirements.md",
+      "output": "trace/multi-link.md",
+      "expected": [],
+      "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
+      "output_sha256": "7715382cd9c053038aa91a72385fc8b300553b00423833c2b10a63cf89786a24",
+      "actual": [],
+      "planted": 0,
+      "caught": 0,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 1,
+      "good_flagged": 0
+    },
+    {
+      "checker": "trace",
+      "source": "trace/requirements.md",
+      "output": "trace/flawed.md",
+      "expected": [
+        [
+          "unknown_requirement",
+          "TC-002"
+        ],
+        [
+          "untraced_requirement",
+          "REQ-002"
+        ],
+        [
+          "untraced_requirement",
+          "REQ-003"
+        ]
+      ],
+      "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
+      "output_sha256": "9a57a58943968b1203085fc574199faa6ae1ea628b74c676c4648f672f1b7c95",
+      "actual": [
+        [
+          "unknown_requirement",
+          "TC-002"
+        ],
+        [
+          "untraced_requirement",
+          "REQ-002"
+        ],
+        [
+          "untraced_requirement",
+          "REQ-003"
+        ]
+      ],
+      "planted": 3,
+      "caught": 3,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 0,
+      "good_flagged": 0
+    },
+    {
+      "checker": "trace",
+      "source": "trace/requirements.md",
+      "output": "trace/incomplete.md",
+      "expected": [
+        [
+          "missing_step",
+          "TC-002"
+        ],
+        [
+          "missing_reference",
+          "TC-004"
+        ],
+        [
+          "untraced_requirement",
+          "REQ-002"
+        ]
+      ],
+      "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
+      "output_sha256": "9ad454c7da17a01ee9971a77358f8502425c71f04f04a524de357ebc6e087207",
+      "actual": [
+        [
+          "missing_step",
+          "TC-002"
+        ],
+        [
+          "missing_reference",
+          "TC-004"
+        ],
+        [
+          "untraced_requirement",
+          "REQ-002"
+        ]
+      ],
+      "planted": 3,
+      "caught": 3,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 0,
+      "good_flagged": 0
+    }
+  ],
+  "totals": {
+    "quote": {
+      "planted": 4,
+      "caught": 4,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 2,
+      "good_flagged": 0
+    },
+    "review": {
+      "planted": 3,
+      "caught": 3,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 2,
+      "good_flagged": 0
+    },
+    "trace": {
+      "planted": 6,
+      "caught": 6,
+      "missed": 0,
+      "unexpected": 0,
+      "good": 2,
+      "good_flagged": 0
+    }
+  }
+}

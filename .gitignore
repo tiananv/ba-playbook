@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+.cache/
+.build-notes/
+data/raw/
+raw-data/
+*.egg-info/
+build/
+dist/
+.DS_Store
+workflows/*/examples/*/
+

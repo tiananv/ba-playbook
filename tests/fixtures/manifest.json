@@ -1,0 +1,15 @@
+[
+  {"checker": "quote", "source": "quote/transcript.md", "output": "quote/good.md", "expected": []},
+  {"checker": "quote", "source": "quote/transcript.md", "output": "quote/normalised.md", "expected": []},
+  {"checker": "quote", "source": "quote/transcript.md", "output": "quote/flawed.md", "expected": [["missing_source", "REQ-001"], ["altered_quote", "REQ-002"], ["source_format", "REQ-003"]]},
+  {"checker": "quote", "source": "quote/transcript.md", "output": "quote/multiple-sources.md", "expected": [["source_format", "REQ-001"]]},
+  {"checker": "review", "source": "review/spec.md", "output": "review/good.md", "expected": []},
+  {"checker": "review", "source": "review/spec.md", "output": "review/no-findings.md", "expected": []},
+  {"checker": "review", "source": "review/spec.md", "output": "review/flawed.md", "expected": [["unknown_section", "F-001"], ["duplicate_finding", "F-003"]]},
+  {"checker": "review", "source": "review/spec.md", "output": "review/duplicate-id.md", "expected": [["duplicate_id", "F-001"]]},
+  {"checker": "trace", "source": "trace/requirements.md", "output": "trace/good.md", "expected": []},
+  {"checker": "trace", "source": "trace/requirements.md", "output": "trace/multi-link.md", "expected": []},
+  {"checker": "trace", "source": "trace/requirements.md", "output": "trace/flawed.md", "expected": [["unknown_requirement", "TC-002"], ["untraced_requirement", "REQ-002"], ["untraced_requirement", "REQ-003"]]},
+  {"checker": "trace", "source": "trace/requirements.md", "output": "trace/incomplete.md", "expected": [["missing_step", "TC-002"], ["missing_reference", "TC-004"], ["untraced_requirement", "REQ-002"]]}
+]
+
