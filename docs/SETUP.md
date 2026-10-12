@@ -17,10 +17,27 @@ uv run pytest
 ```
 
 `make setup` runs `uv sync --locked` to install the pinned dependencies into the
-local `.venv`. `make results` runs the labelled checker fixtures, writes
+local `.venv`. `make results` runs the labelled checker test documents, writes
 [benchmark details](../results/checker-benchmark.json), and refreshes the generated
-tables in the README and this guide. `uv run pytest` runs the offline test suite;
+AI/check table in the README and the self-test and tool tables in this guide.
+`uv run pytest` runs the offline test suite;
 it makes no live model calls. `make test` runs the same suite.
+
+### Checker self-tests
+
+<!-- RESULTS:START -->
+The checkers caught **13 of 13 planted structural issues** across **12 test documents**. They flagged **0 of 6 good documents**.
+
+| Checker | Planted | Caught | Missed | Unexpected flags | Good documents flagged |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Quote | 4 | 4 | 0 | 0 | 0 / 2 |
+| Review | 3 | 3 | 0 | 0 | 0 / 2 |
+| Trace | 6 | 6 | 0 | 0 | 0 / 2 |
+
+These small examples test errors the scripts are designed to catch. This is not evidence of model accuracy or real-world detection rates. A quote can be real but irrelevant, a cited section can be misread, and a linked test can miss the behaviour.
+
+Measured using [labelled test documents](../tests/fixtures/README.md). [Run details](../results/checker-benchmark.json) include expected and actual issue IDs and file hashes for checking whether inputs have changed. Use the [commands above](#reproduce-the-checker-self-tests) to reproduce the results.
+<!-- RESULTS:END -->
 
 ## The same workflow in three tools
 
@@ -37,6 +54,30 @@ included [.github/skills](../.github/skills/) wrappers. Both use the same workfl
 instructions. See the [official compatibility note](https://code.visualstudio.com/docs/agent-customization/prompt-files).
 Check that skills and reviewer agents load in your installed clients and record
 any version-specific differences before relying on them.
+
+### Claude Code
+
+Open the repository and invoke the workflow's command, such as
+`/workshop-to-requirements`, with the source file path and a separate output path.
+The project skill loads the shared prompt. Provide only approved context and run
+the workflow's checker if the tool has not run it. Interactive skill use does not
+automatically save the model-run details recorded by the runner below.
+
+### GitHub Copilot in VS Code
+
+With the Local agent, invoke the workflow's prompt command and attach the source
+file. For an Agent Host session, load the matching skill from `.github/skills/`.
+Select an approved model and provide an output path. If the command does not appear,
+inspect the customisation view and use the chat instructions while checking your
+installed version. Confirm that the intended instructions were loaded.
+
+### ChatGPT or another chat app
+
+Follow the workflow's paste guide using an approved account. Paste the source
+contents as well as the prompt; a local filename alone is not enough. Save the
+unedited Markdown answer, then run the checker locally. A chat answer cannot prove
+that a local checker passed. The manual runner below records the prompt and answer
+alongside the model label you supplied and the time the answer was imported.
 
 ## Record a worked example
 

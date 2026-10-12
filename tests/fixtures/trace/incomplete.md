@@ -1,4 +1,4 @@
-# Hand-authored checker fixture, not model output
+# Fictional checker test document
 
 ## TC-001: Slots
 Requirements: REQ-001

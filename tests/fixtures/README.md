@@ -1,6 +1,6 @@
-# Labelled checker fixtures
+# Labelled checker test documents
 
-Every document here is hand-authored synthetic test data. None is a model output.
+These fictional test documents check specific errors. None is a model output.
 The source files are deliberately small so a reader can inspect the expected result.
 `manifest.json` lists each input pair and the planted issue code and item ID.
 
@@ -12,4 +12,3 @@ is a good control. All benchmark defects are structural and within checker scope
 The unit tests also show important limits: a real quote can support a wrong claim,
 two differently worded findings can describe the same issue, and an ID link can
 connect a requirement to an irrelevant test. Those cases need a person.
-

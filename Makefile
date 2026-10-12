@@ -10,10 +10,9 @@ setup:
 test:
 	uv run pytest
 
-# Regenerate the README self-tests, setup tool table and benchmark details.
+# Regenerate the README check table, setup self-tests and tool table, and JSON details.
 results:
 	uv run playbook-results
 
 examples:
 	uv run playbook-examples --backend "$(BACKEND)" --model "$(MODEL)" --run "$(RUN)"
-

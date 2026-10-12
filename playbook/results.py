@@ -1,4 +1,4 @@
-"""Benchmark labelled fixtures and regenerate the README and setup tables."""
+"""Measure checker test cases and regenerate the README and setup tables."""
 
 import json
 from collections import Counter
@@ -29,11 +29,11 @@ def benchmark(fixtures: Path) -> dict:
             totals[case["checker"]][key] += value
         details.append({**case, "source_sha256": digest(source), "output_sha256": digest(output),
                         "actual": [list(pair) for pair in actual.elements()], **result})
-    return {"description": "Hand-authored structural checker fixtures, not a model evaluation.",
+    return {"description": "Fictional test documents check specific errors; they do not measure model accuracy.",
             "cases": details, "totals": totals}
 
 
-def readme_section(result: dict) -> str:
+def self_test_section(result: dict) -> str:
     """Build the self-test counts and table with their limits beside them."""
     totals = result["totals"]
     planted = sum(row["planted"] for row in totals.values())
@@ -41,18 +41,19 @@ def readme_section(result: dict) -> str:
     good = sum(row["good"] for row in totals.values())
     flagged = sum(row["good_flagged"] for row in totals.values())
     lines = [f"The checkers caught **{caught} of {planted} planted structural issues** across "
-             f"**{len(result['cases'])} fixture documents**. They flagged **{flagged} of {good} good documents**.", "",
+             f"**{len(result['cases'])} test documents**. They flagged **{flagged} of {good} good documents**.", "",
              "| Checker | Planted | Caught | Missed | Unexpected flags | Good documents flagged |",
              "| --- | ---: | ---: | ---: | ---: | ---: |"]
     for name, row in totals.items():
         lines.append(f"| {name.capitalize()} | {row['planted']} | {row['caught']} | {row['missed']} | {row['unexpected']} | {row['good_flagged']} / {row['good']} |")
     lines.extend(["",
-                  "These small, hand-authored fixtures exercise known structural defects. This is not evidence of model "
+                  "These small examples test errors the scripts are designed to catch. This is not evidence of model "
                   "accuracy or real-world detection rates. A quote can be real but irrelevant, a cited section can be "
                   "misread, and a linked test can miss the behaviour.", "",
-                  "Measured using [labelled fixtures](tests/fixtures/README.md). "
-                  "[Run details](results/checker-benchmark.json) include expected and actual issue IDs and input hashes; "
-                  "[setup instructions](docs/SETUP.md#reproduce-the-checker-self-tests) explain how to reproduce them."])
+                  "Measured using [labelled test documents](../tests/fixtures/README.md). "
+                  "[Run details](../results/checker-benchmark.json) include expected and actual issue IDs and file hashes "
+                  "for checking whether inputs have changed. Use the [commands above](#reproduce-the-checker-self-tests) "
+                  "to reproduce the results."])
     return "\n".join(lines)
 
 
@@ -81,8 +82,8 @@ def main() -> int:
     result = benchmark(ROOT / "tests" / "fixtures")
     inventory = inventory_sections(ROOT)
     documents = {
-        "README.md": {"RESULTS": readme_section(result), "CHECKS": inventory["CHECKS"]},
-        "docs/SETUP.md": {"TOOLS": inventory["TOOLS"]},
+        "README.md": {"CHECKS": inventory["CHECKS"]},
+        "docs/SETUP.md": {"TOOLS": inventory["TOOLS"], "RESULTS": self_test_section(result)},
     }
     rendered = {}
     for filename, sections in documents.items():

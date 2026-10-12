@@ -1,4 +1,4 @@
-# Hand-authored checker fixture, not model output
+# Fictional checker test document
 
 ## REQ-001: Status
 Keep the status pending until review.

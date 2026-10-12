@@ -1,5 +1,5 @@
 {
-  "description": "Hand-authored structural checker fixtures, not a model evaluation.",
+  "description": "Fictional test documents check specific errors; they do not measure model accuracy.",
   "cases": [
     {
       "checker": "quote",
@@ -7,7 +7,7 @@
       "output": "quote/good.md",
       "expected": [],
       "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
-      "output_sha256": "99bd90d14b13243d59052c841562f72ea3b72a58ead3dfbd16900660dd4c1df7",
+      "output_sha256": "547d66de4f37d3f7b0c73554b03ec7cf2c3ba958efea745e035dd561dbdca929",
       "actual": [],
       "planted": 0,
       "caught": 0,
@@ -22,7 +22,7 @@
       "output": "quote/normalised.md",
       "expected": [],
       "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
-      "output_sha256": "563912d5ea5cf7bcc8e7fdd9eb45c1632b18fc46e43bf5cde760f87cbaab887f",
+      "output_sha256": "cf43502ecbb467b7cb048c6a732e1bc394c52bf81e8c0355f7d48ad941794b8a",
       "actual": [],
       "planted": 0,
       "caught": 0,
@@ -50,7 +50,7 @@
         ]
       ],
       "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
-      "output_sha256": "4912e385931501f0699e277fff481782b41021cd1a99510e395c5eedc628fdc5",
+      "output_sha256": "151e2b74e79cab2b65bbfb422f7205e41a06736fb66213f99593fd76c590e45c",
       "actual": [
         [
           "missing_source",
@@ -83,7 +83,7 @@
         ]
       ],
       "source_sha256": "949c87ee03826a2ef1f22de01828aefa42ebd29ef0ccfbc0ce4f713265f55b62",
-      "output_sha256": "9e603548c59c83a949dd721c5d4706905db03e4d3735e842b287edcc586b1e4a",
+      "output_sha256": "194e988361dbed2b15d264fb365869ec0d2dee545128e585b7b69b18d4b4a6cd",
       "actual": [
         [
           "source_format",
@@ -103,7 +103,7 @@
       "output": "review/good.md",
       "expected": [],
       "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
-      "output_sha256": "889511439d60e4609f4a9aea89bbc820f37c5e16be8f7482a9e7a8c8562c7da5",
+      "output_sha256": "877832a45205479317d3b15d949c6865565874b80f0a51e93e09204a264379f5",
       "actual": [],
       "planted": 0,
       "caught": 0,
@@ -118,7 +118,7 @@
       "output": "review/no-findings.md",
       "expected": [],
       "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
-      "output_sha256": "f68b4ada666a71554c7362d63308e6a7b22548a95dbefc79ce6d5d6041b26ca5",
+      "output_sha256": "9e21a19f3443a7a0a9d095ed0d81010e8e7961d1930bd831cea2097de59c9e05",
       "actual": [],
       "planted": 0,
       "caught": 0,
@@ -142,7 +142,7 @@
         ]
       ],
       "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
-      "output_sha256": "5d361cac2445d02673e9eadb0d0ae59d68044b59b89e4c931fa47e6de5ff6681",
+      "output_sha256": "09e43e8ef88ac26d606de969427aa80d81a4af14309cb4da05428e6244bf7007",
       "actual": [
         [
           "unknown_section",
@@ -171,7 +171,7 @@
         ]
       ],
       "source_sha256": "eeb8897cdce72d22b4b2afcf839c84d12f9f0995933d4f598491549473410e08",
-      "output_sha256": "4ebf99039525a0dc4d9ffedcca377767cb7d4b965aa144e1129a2b152095ca9c",
+      "output_sha256": "29b9e48e3294b993088d505a7be07829fd6410eb9540e005a87ed19cb8fb2cab",
       "actual": [
         [
           "duplicate_id",
@@ -191,7 +191,7 @@
       "output": "trace/good.md",
       "expected": [],
       "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
-      "output_sha256": "b00f1141046b2599b2ce83698adcd767020499e88e0d8755eb9f6fe65feb2cd4",
+      "output_sha256": "5609d8175f51f3feac38ff35df2559ac9bb63b34d538a00c1f7ccbf0a935fbff",
       "actual": [],
       "planted": 0,
       "caught": 0,
@@ -206,7 +206,7 @@
       "output": "trace/multi-link.md",
       "expected": [],
       "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
-      "output_sha256": "29f6b1da3f1313ff5df4ecd448cef5b4d28c5131a2c5451af602509565119b53",
+      "output_sha256": "7715382cd9c053038aa91a72385fc8b300553b00423833c2b10a63cf89786a24",
       "actual": [],
       "planted": 0,
       "caught": 0,
@@ -234,7 +234,7 @@
         ]
       ],
       "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
-      "output_sha256": "93c47e20909cc78b36b5427302630bd0a5356ae4d3abffd7f9f3a691fb844368",
+      "output_sha256": "9a57a58943968b1203085fc574199faa6ae1ea628b74c676c4648f672f1b7c95",
       "actual": [
         [
           "unknown_requirement",
@@ -275,7 +275,7 @@
         ]
       ],
       "source_sha256": "bc43279fad325bd9666a09bc3b9c512211d1ee3827de191d506a2ae912c9f05a",
-      "output_sha256": "75429d398d203fd6cd20fe4c908722469642f42ce0ad679ae855aa78eed7c3cf",
+      "output_sha256": "9ad454c7da17a01ee9971a77358f8502425c71f04f04a524de357ebc6e087207",
       "actual": [
         [
           "missing_step",

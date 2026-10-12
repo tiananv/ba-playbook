@@ -16,5 +16,4 @@ jobs:
       - run: uv sync --locked
       - run: uv run pytest
       - run: make results
-      - run: git diff --exit-code -- README.md docs/SETUP.md results
-
+      - run: git diff --exit-code -- README.md docs/SETUP.md results/checker-benchmark.json

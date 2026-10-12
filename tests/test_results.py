@@ -63,11 +63,11 @@ def result_project(tmp_path, monkeypatch):
         folder.mkdir(parents=True)
         shutil.copyfile(root / "workflows" / workflow / "README.md", folder / "README.md")
     (tmp_path / "README.md").write_text(
-        "Overview.\n<!-- RESULTS:START -->\nstale counts\n<!-- RESULTS:END -->\n"
-        "<!-- CHECKS:START -->\nstale checks\n<!-- CHECKS:END -->\nKeep the pending example.\n")
+        "Overview.\n<!-- CHECKS:START -->\nstale checks\n<!-- CHECKS:END -->\nKeep the pending example.\n")
     (tmp_path / "docs").mkdir()
     (tmp_path / "docs/SETUP.md").write_text(
-        "Setup.\n<!-- TOOLS:START -->\nstale tools\n<!-- TOOLS:END -->\nKeep the review steps.\n")
+        "Setup.\n<!-- RESULTS:START -->\nstale counts\n<!-- RESULTS:END -->\n"
+        "<!-- TOOLS:START -->\nstale tools\n<!-- TOOLS:END -->\nKeep the review steps.\n")
     monkeypatch.setattr(results, "ROOT", tmp_path)
     return tmp_path
 
@@ -82,10 +82,12 @@ def test_results_refreshes_both_documents_and_is_repeatable(result_project):
     assert "Claude Code skill" in setup and "What the AI does" not in setup
     assert readme.startswith("Overview.\n") and readme.endswith("Keep the pending example.\n")
     assert setup.startswith("Setup.\n") and setup.endswith("Keep the review steps.\n")
-    assert "not evidence of model accuracy" in readme
+    assert "planted structural issues" not in readme
+    assert "planted structural issues" in setup and "not evidence of model accuracy" in setup
     assert "<picture>" not in readme
     for target in re.findall(r"\]\(([^)]+)\)", setup):
-        assert (result_project / "docs" / target).is_file()
+        filename = target.split("#", 1)[0] or "SETUP.md"
+        assert (result_project / "docs" / filename).is_file()
     outputs = [result_project / name for name in ("README.md", "docs/SETUP.md", "results/checker-benchmark.json")]
     before = [path.read_bytes() for path in outputs]
     assert results.main() == 0
@@ -93,18 +95,23 @@ def test_results_refreshes_both_documents_and_is_repeatable(result_project):
     assert not (result_project / "assets").exists()
 
 
+@pytest.mark.parametrize("section", ["TOOLS", "RESULTS"])
 @pytest.mark.parametrize("markers", [
     "<!-- TOOLS:START -->",
     "<!-- TOOLS:END -->\n<!-- TOOLS:START -->",
     "<!-- TOOLS:START -->\n<!-- TOOLS:START -->\n<!-- TOOLS:END -->",
 ])
-def test_invalid_setup_markers_leave_all_outputs_unchanged(result_project, markers, capsys):
+def test_invalid_setup_markers_leave_all_outputs_unchanged(result_project, section, markers, capsys):
     """A malformed second document must not leave partially refreshed results."""
     setup = result_project / "docs/SETUP.md"
-    setup.write_text(markers)
+    markers = markers.replace("TOOLS", section)
+    document = setup.read_text()
+    start, end = f"<!-- {section}:START -->", f"<!-- {section}:END -->"
+    document = document.split(start)[0] + markers + document.split(end)[1]
+    setup.write_text(document)
     readme = (result_project / "README.md").read_bytes()
     assert results.main() == 2
-    assert "docs/SETUP.md must contain one ordered pair of TOOLS markers" in capsys.readouterr().out
+    assert f"docs/SETUP.md must contain one ordered pair of {section} markers" in capsys.readouterr().out
     assert (result_project / "README.md").read_bytes() == readme
-    assert setup.read_text() == markers
+    assert setup.read_text() == document
     assert not (result_project / "results").exists()
