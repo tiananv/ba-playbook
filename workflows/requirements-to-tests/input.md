@@ -1,7 +1,7 @@
 # Paper Lantern Community Clinic: agreed requirements for the exercise
 
-Fictional training case. This is an author-written input baseline, not an AI
-output or evidence of real stakeholder agreement. It describes booking administration.
+These fictional requirements are inputs to the workflow; they do not record stakeholder agreement.
+They describe booking administration.
 
 ## REQ-001: Available slots
 
@@ -23,4 +23,3 @@ The booking page must not infer clinical suitability from this status.
 
 Cancelling a confirmed booking must display a cancellation reference and make the
 slot available again. No reminder or retention rule is agreed in this exercise.
-

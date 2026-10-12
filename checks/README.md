@@ -1,7 +1,7 @@
 # Standalone Markdown checks
 
 Run from the repository after `make setup`. Paths may point to any local UTF-8
-Markdown file. The content must follow the small contract below. A different file
+Markdown file. Use the headings and fields shown below. A different file
 name is fine; an unsupported layout needs conversion. An empty or unrecognised
 document fails. The commands do not send data to a model or network service.
 
@@ -51,4 +51,4 @@ links and unknown references. Links do not prove behaviour, assertion quality,
 execution or boundary coverage; a person must check the test's meaning.
 
 Do not wrap documents in code fences. The checkers use line-based readers for this
-contract, not a general Markdown parser. Reformat unfamiliar layouts before use.
+format, not a general Markdown parser. Reformat unfamiliar layouts before use.

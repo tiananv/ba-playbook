@@ -1,7 +1,7 @@
 # Paper Lantern Community Clinic: booking and referral specification
 
-Fictional training case. Author-written input, not a model output. This draft
-describes administration only and contains open design questions.
+This fictional specification is an input to the workflow. It describes
+administration only and contains open design questions.
 
 ## SEC-001: Choose a service and a slot
 
@@ -32,4 +32,3 @@ open decision.
 The service owner must agree unresolved rules before release. Retention, access
 permissions and the treatment of repeated submissions need decisions. This draft
 sets no legal, clinical or regulatory requirements.
-

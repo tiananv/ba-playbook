@@ -15,7 +15,7 @@ Replace the model label with the actual model shown in your chat app. This comma
 prepares prompts from the canonical workflow instructions and fictional inputs.
 It deliberately does not read arbitrary context folders or local private files.
 Copy each printed `.prompt.md` into a fresh chat and save the unedited response to
-the matching `.answer.md`. Do not use a test fixture as a model answer. Rerun the
+the matching `.answer.md`. Do not use a test document as a model answer. Rerun the
 same command to import the answers and run the checkers. Use the same selected model
 for the whole run, or start a new run name when you change it.
 
@@ -66,7 +66,7 @@ Changes require a new `RUN` name. Keep the original result, including failures.
 Edit a copy for stakeholder review and rerun the standalone checker on that copy.
 The metadata hash covers the saved workflow prompt, not hidden provider or CLI
 system instructions. API/CLI timestamps mark the call attempt; manual timestamps
-mark preparation or import. A user-supplied model label is not provider attestation.
+mark preparation or import. For pasted answers, the script cannot verify the model name you enter.
 
 CLI exit `0` means generation and structural checks completed, `1` means findings
 need attention, and `2` means a manual answer is pending or a configuration/input
@@ -76,8 +76,8 @@ Pending is an expected manual state, not evidence of generated examples.
 Run only one workflow with
 `uv run playbook-examples --workflow spec-review-board --backend manual --model "your-chat-model" --run first-run`.
 Do not run two processes with the same run name simultaneously. Generated run
-folders are gitignored. Review their contents and provenance before choosing any
-for public release. A passing checker still requires a person to assess meaning,
+folders are gitignored. Check what the files contain and where they came from before sharing them.
+A passing checker still requires a person to assess meaning,
 completeness, priorities and acceptance.
 
 ## Tool format references
@@ -92,4 +92,3 @@ Prompt files are supported by the Local agent and are not loaded by Agent Host.
 The compatibility skill wrappers share the same canonical prompts. Tool access and
 delegation depend on the installed version and organisational settings; interactive
 loading still needs to be checked in the intended clients.
-

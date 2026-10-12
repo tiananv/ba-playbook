@@ -1,4 +1,4 @@
-"""Optional model backends with exact prompts, resumable files and run provenance."""
+"""Optional model backends with exact prompts, resumable files and saved run details."""
 
 import hashlib
 import json
@@ -98,7 +98,7 @@ def _claude(prompt: str, model: str) -> tuple[str, str]:
 
 
 def generate(prompt: str, output: Path, backend: str, model: str) -> Path:
-    """Save a model answer with provenance, or prepare a manual prompt for later use."""
+    """Save an answer with model, time and file details, or prepare a manual prompt."""
     if backend not in BACKENDS:
         raise ModelError(f"Choose a backend from: {', '.join(BACKENDS)}.")
     if not model.strip():
@@ -122,7 +122,7 @@ def generate(prompt: str, output: Path, backend: str, model: str) -> Path:
         raise ModelError("Saved prompt differs from this request. Use a new --run name.")
     if output.exists():
         if previous.get("status") != "complete" or previous.get("output_sha256") != digest(output.read_text(encoding="utf-8")):
-            raise ModelError("Existing output has no matching provenance or was edited. Use a new --run name.")
+            raise ModelError("Existing output has no matching saved run details or was edited. Use a new --run name.")
         return output
     prompt_path.write_text(prompt, encoding="utf-8")
     metadata = {**identity, "model_id": model, "model_id_source": "user-supplied",

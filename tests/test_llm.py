@@ -1,4 +1,4 @@
-"""Exercise backend contracts, failure handling and provenance without model calls."""
+"""Test backend request formats, failure handling and saved details without model calls."""
 
 import json
 import subprocess
@@ -149,6 +149,6 @@ def test_blank_manual_answer_is_not_accepted(tmp_path):
 
 
 def test_model_must_be_explicit(tmp_path):
-    """Do not silently choose a model or fabricate provenance for a manual answer."""
+    """Do not silently choose a model or invent recorded details for a manual answer."""
     with pytest.raises(llm.ModelError, match="Set --model"):
         llm.generate("Synthetic test.", tmp_path / "output.md", "manual", "")

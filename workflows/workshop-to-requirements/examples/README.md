@@ -1,7 +1,8 @@
 # Examples pending
 
-No model output is included in this build. The example runner creates a named run
-folder here, preserving prompts, raw answers, metadata and checker reports. Run
-folders are gitignored because later inputs may require private handling. Review
-any real output and its provenance before deliberately selecting it for publication.
-Hand-authored test outputs live only under `tests/fixtures/`.
+I haven't recorded a reviewed workshop example yet. It will need the AI's original
+requirements, my corrections and reasons, and my sign-off.
+
+The [worked example steps](../../../docs/SETUP.md#record-a-worked-example) explain
+how to save those records. The runner keeps each named run here in a gitignored
+folder. Check what the files contain and where they came from before sharing them.

@@ -1,7 +1,7 @@
 # Paper Lantern Community Clinic: booking workshop
 
-Fictional training case. Author-written input, not a model output. All roles,
-services and events below are invented. No patient records are included.
+These fictional workshop notes are inputs to the workflow. All roles, services
+and events below are invented. No patient records are included.
 
 Facilitator: We are discussing booking administration, not clinical decisions.
 
@@ -24,4 +24,3 @@ Reception role: A cancelled slot should become available again.
 Facilitator: We have not agreed a retention period, reminder channel or timeout for reserving a slot.
 
 Service owner role: Keep those as open decisions. Do not turn them into rules.
-
