@@ -12,5 +12,7 @@ Save the draft to the user's chosen Markdown path without overwriting an input.
 Run `uv run quote-check <source.md> <output.md>` from the repo root after
 saving it. Save the quote-check report beside the draft.
 Report all flags and unresolved decisions. A person retains final sign-off.
-For saved prompts, model details and checker reports, use the workflow's
-`make examples` route.
+For a saved run, use
+`uv run playbook-examples --workflow workshop-to-requirements --backend manual --model "your-chat-model" --run first-run`.
+Use the actual model label from your chat app and follow the paste steps in
+[the setup guide](../../../docs/SETUP.md#how-to-run-it).

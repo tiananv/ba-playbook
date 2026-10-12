@@ -1,4 +1,4 @@
-"""Keep tests offline and place all temporary artefacts inside the repository."""
+"""Keep tests offline and clear inherited model credentials."""
 
 import socket
 
@@ -19,4 +19,3 @@ def offline(monkeypatch):
     monkeypatch.setattr(llm, "_claude", denied)
     for name in ("ANTHROPIC_API_KEY", "OPENAI_API_KEY", "OPENROUTER_API_KEY"):
         monkeypatch.delenv(name, raising=False)
-

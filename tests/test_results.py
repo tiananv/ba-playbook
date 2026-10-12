@@ -29,9 +29,11 @@ def test_wrong_issue_does_not_count_as_caught(monkeypatch, tmp_path):
     (tmp_path / "manifest.json").write_text(json.dumps([
         {"checker": "quote", "source": "source.md", "output": "output.md", "expected": [["missing_source", "REQ-001"]]}]))
     monkeypatch.setitem(results.CHECKERS, "quote", lambda source, output: [Issue("missing_source", "REQ-999", "Wrong item.")])
-    row = results.benchmark(tmp_path)["totals"]["quote"]
+    result = results.benchmark(tmp_path)
+    row = result["totals"]["quote"]
     assert row["planted"] == 1 and row["caught"] == 0
     assert row["missed"] == 1 and row["unexpected"] == 1
+    assert "self-tests found a problem" in results.self_test_section(result)
 
 
 def test_duplicate_warnings_are_not_double_counted(monkeypatch, tmp_path):
@@ -82,8 +84,8 @@ def test_results_refreshes_both_documents_and_is_repeatable(result_project):
     assert "Claude Code skill" in setup and "What the AI does" not in setup
     assert readme.startswith("Overview.\n") and readme.endswith("Keep the pending example.\n")
     assert setup.startswith("Setup.\n") and setup.endswith("Keep the review steps.\n")
-    assert "planted structural issues" not in readme
-    assert "planted structural issues" in setup and "not evidence of model accuracy" in setup
+    assert "planted structural issues" not in readme + setup
+    assert "self-tests passed" in setup and "doesn't measure how well an AI model performs" in setup
     assert "<picture>" not in readme
     for target in re.findall(r"\]\(([^)]+)\)", setup):
         filename = target.split("#", 1)[0] or "SETUP.md"

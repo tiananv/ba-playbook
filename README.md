@@ -3,13 +3,18 @@
   <img src="assets/banner-light.svg" alt="ba-playbook. BA workflows with AI, checked against the source." width="1200">
 </picture>
 
-## The problem
+I want to use AI on BA work without it quietly making things up. This is the
+approach I'm putting together for Claude Code, Copilot and ChatGPT, with small
+checks for missing quotes, made-up section references and gaps in test links.
 
-AI can draft a tidy requirement that was never agreed, cite a section that does not
-exist or miss a test link. This playbook gives a business analyst a repeatable method
-for using AI and small checks that make those mistakes visible.
+## Where I'm up to
 
-## The method
+The workflows cover workshop notes, specification reviews and acceptance tests.
+I haven't recorded a reviewed example yet. My next step is to save a real AI draft,
+mark my corrections and explain my sign-off. The [worked example steps](docs/SETUP.md#record-a-worked-example)
+show what I'll need to keep.
+
+## My approach
 
 ```mermaid
 flowchart LR
@@ -19,65 +24,51 @@ flowchart LR
     D --> E[Human sign-off]
 ```
 
-Start with [what never goes into AI](WHAT-NEVER-GOES-INTO-AI.md) and the [method](METHOD.md).
-Use permitted information in the [context templates](context/) and keep open decisions
-visible. The fictional Paper Lantern Community Clinic case covers booking and referral
-administration. Keep the original AI draft and checker report for a person to assess
-against the source and sign off.
-
-## Worked example
-
-I haven't recorded a reviewed example yet. When I do, it will show the AI's first
-draft, my corrections and why, and my sign-off. Follow the
-[steps for recording a worked example](docs/SETUP.md#record-a-worked-example).
+I start with [what never goes into AI](WHAT-NEVER-GOES-INTO-AI.md) and the
+[method](METHOD.md). The [context templates](context/) separate agreed rules from
+assumptions and open questions. For practice, the workflows use Paper Lantern
+Community Clinic, a fictional booking and referral service.
 
 ## What the AI does / What checks it
 
 <!-- CHECKS:START -->
 | What the AI does | What checks it |
 | --- | --- |
-| Drafts requirements | [quote-check](checks/quote_check.py): Verbatim source check, then a person checks meaning and omissions. |
-| Reviews a specification | [review-check](checks/review_check.py): Section citations and repeated issue text, then a person checks the consolidation. |
-| Writes test cases | [trace-check](checks/trace_check.py): Requirement links and complete steps, then a person checks behaviour and coverage. |
-| Produces a draft for discussion | A person retains final sign-off on every workflow. |
+| Drafts requirements | [quote-check](checks/quote_check.py): Matches quotes to the source. A person checks meaning and omissions. |
+| Reviews a specification | [review-check](checks/review_check.py): Checks section IDs and repeated findings. A person checks the combined review. |
+| Writes test cases | [trace-check](checks/trace_check.py): Checks requirement links and complete steps. A person checks what each test covers. |
+| Produces a draft for discussion | A person makes the final decision in every workflow. |
 <!-- CHECKS:END -->
 
-The checkers use a [simple Markdown format](checks/README.md). A pass confirms only
-the checks described there. A person decides whether the work is accurate and useful.
+The checkers use a [simple Markdown format](checks/README.md). A real quote can
+still be attached to the wrong requirement. I still need to read the source,
+check what was missed and keep the final decision with a person.
 
-Each checker has [small built-in tests](docs/SETUP.md#checker-self-tests), including
-cases where a check passes but the content is still wrong.
+## How to run it
 
-## Use it in your own tools
+The [setup guide](docs/SETUP.md#how-to-run-it) covers choosing an AI tool, saving a
+draft, checking it and running the checker self-tests. Each workflow has its own
+prompt and checker command:
 
-Follow the [setup guide](docs/SETUP.md) to use these workflows in Claude Code, Copilot or an approved chat app.
+- [Workshop to requirements](workflows/workshop-to-requirements/README.md): keep each requirement linked to the discussion.
+- [Specification review](workflows/spec-review-board/README.md): compare concerns from different roles.
+- [Requirements to tests](workflows/requirements-to-tests/README.md): see missing links and incomplete test steps.
 
 ## Under the hood
 
 ```text
-METHOD.md and WHAT-NEVER-GOES-INTO-AI.md  Method and information handling
-context/                                  Empty project context templates
-workflows/                                Prompts, fictional inputs and runner guide
-.claude/, .github/ and chat/              Tool entry points and automated checks
-checks/                                   Standalone Markdown checkers
-llm.py and playbook/                      Model runner and self-test generator
-tests/ and results/                       Test documents and measured counts
-docs/SETUP.md                             Setup, self-tests and worked example steps
-assets/                                   Light and dark banners
+context/                     Project brief, glossary and decision templates
+workflows/                   Prompts and fictional source documents
+.claude/, .github/ and chat/  Instructions for each AI tool
+checks/                      Scripts that check drafts
+llm.py and playbook/         Scripts for running workflows and saving results
 ```
-
-Commands for setup, self-tests and model runs are in [SETUP.md](docs/SETUP.md).
 
 ### Data
 
-All clinic inputs were written for this repo and are explicitly fictional. They
-are input exercises, not records of a real workshop or model outputs. Synthetic
-checker test documents live only in [tests/fixtures](tests/fixtures/). The repository's
-original code, documents and fictional material use the [MIT licence](LICENSE).
-No external dataset or raw-data download is needed.
-
-The [Australian Government staff guidance](https://www.digital.gov.au/policy/ai/staff-guidance-public-generative-ai)
-is linked as further reading. It is not copied into the repo or used as legal advice.
+All clinic inputs were written for this repo. They are fictional practice material,
+with no employer, client or patient records. The original code and documents use
+the [MIT licence](LICENSE).
 
 ## About this repo
 

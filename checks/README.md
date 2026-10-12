@@ -1,9 +1,9 @@
 # Standalone Markdown checks
 
-Run from the repository after `make setup`. Paths may point to any local UTF-8
-Markdown file. Use the headings and fields shown below. A different file
-name is fine; an unsupported layout needs conversion. An empty or unrecognised
-document fails. The commands do not send data to a model or network service.
+Run these commands from the repository folder with uv and Python 3.11 installed.
+Paths may point to any local UTF-8 Markdown file. Use the headings and fields below.
+A different file name is fine; other layouts need reformatting. An empty or
+unrecognised document fails. The commands do not send data to a model or network service.
 
 ```sh
 uv run quote-check transcript.md requirements.md
@@ -38,8 +38,9 @@ followed by the exact line `No findings.` to distinguish it from missing output.
 
 The checker flags unknown sections, duplicate finding IDs and repeated issue text
 in the same section, ignoring case, quote style and whitespace. It does not detect
-paraphrased duplicates or verify that an issue is true. The AI consolidator proposes
-semantic merges; a person reviews those decisions and the original role outputs.
+paraphrased duplicates or verify that an issue is true. The AI suggests which
+findings describe the same problem; a person checks those suggestions against the
+original role outputs.
 
 ## Test traceability
 

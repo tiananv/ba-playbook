@@ -1,8 +1,9 @@
 # What never goes into AI
 
-This portfolio accepts public, reusable or fictional material only. No employer,
-client or personal material belongs here, including prompts, screenshots and logs.
-This is a practical working guide, not legal advice or an organisation's policy.
+For this repo, I only want reusable public information or fictional material.
+Employer, client and personal material stays out, including prompts, screenshots
+and logs. These are my working notes; workplace policy still applies, and this
+isn't legal advice.
 
 ## Classify before copying
 
@@ -10,11 +11,11 @@ This is a practical working guide, not legal advice or an organisation's policy.
 | --- | --- | --- |
 | Public | Deliberately published and permitted for this use | Check rights and tool approval before use. |
 | Internal | Intended for people inside an organisation | Keep out of this repo and public AI. Follow the owner's approved process. |
-| Confidential | Client, commercial, operational or security information with restricted access | Keep out of this repo. Only an explicitly approved organisational process may handle it. |
-| Personal or sensitive | Information about a person, including health, contact or financial details | Keep out of this repo and public AI. Escalate any proposed use to the authorised owner. |
+| Confidential | Client, commercial, operational or security information with restricted access | Keep out of this repo. Follow the information owner's approved process. |
+| Personal or sensitive | Information about a person, including health, contact or financial details | Keep out of this repo and public AI. Ask the information owner before using it elsewhere. |
 
-These are plain-language working labels, not a replacement for government security
-classifications or an organisation's formal classification scheme.
+These labels help me think through what I'm handling. They don't replace an
+organisation's own information categories or government security classifications.
 
 ## Client, personal and secret information
 
@@ -26,17 +27,17 @@ fictional case rather than lightly rewriting a real one.
 
 ## Enterprise and public tools
 
-A personal subscription or a familiar product name is not organisational approval.
-For workplace work, confirm the approved account, permitted information, retention,
-access and use of prompts for model training. Enterprise controls vary by contract
-and configuration. This public repo remains fictional regardless of the tool used.
+A paid subscription doesn't tell me whether a tool is approved for work. I need to
+check the account, what information is allowed, how long it is kept, who can see it
+and whether prompts can be used for model training. The organisation's agreement
+and settings matter. This public repo still uses only public or fictional inputs.
 
 ## When unsure
 
-Stop before uploading. Ask the information owner or the organisation's security and
-privacy contact using the approved internal channel. If material has already been
-shared incorrectly, follow the organisation's incident process. Do not paste the
-material again while asking for help.
+My next step would be to stop before uploading and ask the information owner or
+the organisation's security and privacy contact through an approved internal
+channel. If something has already been shared incorrectly, follow the incident
+process. Don't paste it again while asking for help.
 
 ## Before sending
 
@@ -47,6 +48,4 @@ material again while asking for help.
 - [ ] I know who will check the output and make the final decision.
 
 Further reading: [Australian Government staff guidance on public generative AI](https://www.digital.gov.au/policy/ai/staff-guidance-public-generative-ai).
-It directs staff to agency policy and stresses protecting information, evaluating
-outputs and retaining responsibility. Apply the current policy relevant to your work.
-
+Check the current policy that applies to your work before using a tool.

@@ -34,27 +34,14 @@ def benchmark(fixtures: Path) -> dict:
 
 
 def self_test_section(result: dict) -> str:
-    """Build the self-test counts and table with their limits beside them."""
-    totals = result["totals"]
-    planted = sum(row["planted"] for row in totals.values())
-    caught = sum(row["caught"] for row in totals.values())
-    good = sum(row["good"] for row in totals.values())
-    flagged = sum(row["good_flagged"] for row in totals.values())
-    lines = [f"The checkers caught **{caught} of {planted} planted structural issues** across "
-             f"**{len(result['cases'])} test documents**. They flagged **{flagged} of {good} good documents**.", "",
-             "| Checker | Planted | Caught | Missed | Unexpected flags | Good documents flagged |",
-             "| --- | ---: | ---: | ---: | ---: | ---: |"]
-    for name, row in totals.items():
-        lines.append(f"| {name.capitalize()} | {row['planted']} | {row['caught']} | {row['missed']} | {row['unexpected']} | {row['good_flagged']} / {row['good']} |")
-    lines.extend(["",
-                  "These small examples test errors the scripts are designed to catch. This is not evidence of model "
-                  "accuracy or real-world detection rates. A quote can be real but irrelevant, a cited section can be "
-                  "misread, and a linked test can miss the behaviour.", "",
-                  "Measured using [labelled test documents](../tests/fixtures/README.md). "
-                  "[Run details](../results/checker-benchmark.json) include expected and actual issue IDs and file hashes "
-                  "for checking whether inputs have changed. Use the [commands above](#reproduce-the-checker-self-tests) "
-                  "to reproduce the results."])
-    return "\n".join(lines)
+    """Summarise the actual checker run without publishing test counts."""
+    failed = any(row["missed"] or row["unexpected"] for row in result["totals"].values())
+    status = ("The checker self-tests found a problem. Read the command output before using the checks."
+              if failed else "The checker self-tests passed on the sample documents.")
+    return (status + "\n\n"
+            "This doesn't measure how well an AI model performs. A matching quote can support the wrong "
+            "requirement, a cited section can be misread, and a linked test can check the wrong behaviour. "
+            "I still need to compare a real draft with its source.")
 
 
 def inventory_sections(root: Path) -> dict[str, str]:
@@ -62,9 +49,9 @@ def inventory_sections(root: Path) -> dict[str, str]:
     tools = ["| Workflow | Claude Code skill | Copilot prompt | Chat instructions |", "| --- | --- | --- | --- |"]
     checks = ["| What the AI does | What checks it |", "| --- | --- |"]
     descriptions = [
-        ("Drafts requirements", "quote", "Verbatim source check, then a person checks meaning and omissions."),
-        ("Reviews a specification", "review", "Section citations and repeated issue text, then a person checks the consolidation."),
-        ("Writes test cases", "trace", "Requirement links and complete steps, then a person checks behaviour and coverage."),
+        ("Drafts requirements", "quote", "Matches quotes to the source. A person checks meaning and omissions."),
+        ("Reviews a specification", "review", "Checks section IDs and repeated findings. A person checks the combined review."),
+        ("Writes test cases", "trace", "Checks requirement links and complete steps. A person checks what each test covers."),
     ]
     for workflow, (action, checker, explanation) in zip(WORKFLOWS, descriptions):
         paths = [f".claude/skills/{workflow}/SKILL.md", f".github/prompts/{workflow}.prompt.md", f"chat/{workflow}.md"]
@@ -73,7 +60,7 @@ def inventory_sections(root: Path) -> dict[str, str]:
                 raise FileNotFoundError(f"Required packaging file is missing: {path}")
         tools.append(f"| [{workflow}](../workflows/{workflow}/README.md) | [SKILL.md](../{paths[0]}) | [prompt.md](../{paths[1]}) | [Paste guide](../{paths[2]}) |")
         checks.append(f"| {action} | [{checker}-check](checks/{checker}_check.py): {explanation} |")
-    checks.append("| Produces a draft for discussion | A person retains final sign-off on every workflow. |")
+    checks.append("| Produces a draft for discussion | A person makes the final decision in every workflow. |")
     return {"TOOLS": "\n".join(tools), "CHECKS": "\n".join(checks)}
 
 

@@ -1,11 +1,15 @@
 # Specification review board
 
-Use before agreement or build, when a draft specification needs challenge from several perspectives.
+I want to look at a draft spec from different roles before asking someone to agree
+to it. I'm not sure yet which role will add the most useful questions.
 
-**Inputs:** a permitted specification with SEC headings, decision log and scope. The [fictional input](input.md) belongs to the Paper Lantern
-Community Clinic case and was created for this exercise. It is not model output.
-The [canonical prompt](prompt.md) defines the task. **Outputs:** independent role reviews and one consolidated findings table.
-Model examples are pending; [examples/README.md](examples/README.md) explains why.
+Start with a spec you're allowed to use, with SEC headings, a decision log and
+scope. The [practice spec](input.md) describes fictional booking and referral work
+at Paper Lantern Community Clinic; it was written as input for this repo.
+
+The role prompts ask for separate reviews. The [consolidation prompt](prompt.md)
+combines them into a findings table. I haven't recorded a reviewed board example
+yet; the [example notes](examples/README.md) cover what I'll need to keep.
 
 For Claude Code, Copilot or chat, follow the [shared setup instructions](../../docs/SETUP.md#the-same-workflow-in-three-tools).
 
@@ -21,8 +25,10 @@ role-playing every reviewer as independent agents.
 
 Only after all roles finish, give the consolidator the original specification and
 the four reviews. It merges equivalent issues, combines all contributing roles and
-retains minority concerns. The checker catches repeated normalised text in a
-section; paraphrased duplicates and questionable merges need human judgement.
+keeps concerns even when only one role raised them. The checker catches the same
+issue text repeated in a section, ignoring case and spacing. A person still needs
+to spot differently worded duplicates and check that combined findings keep the
+original concern.
 
 ## Check the consolidated findings
 

@@ -1,11 +1,14 @@
 # Requirements to tests
 
-Use when agreed requirements need acceptance test coverage and gaps made visible.
+I want to see which requirements have test cases and where the gaps are.
 
-**Inputs:** a permitted requirement baseline with REQ headings and agreed business rules. The [fictional input](input.md) belongs to the Paper Lantern
-Community Clinic case and was created for this exercise. It is not model output.
-The [canonical prompt](prompt.md) defines the task. **Outputs:** Given/When/Then test cases linked to REQ IDs and a generated traceability matrix.
-Model examples are pending; [examples/README.md](examples/README.md) explains why.
+Use requirements you're allowed to share, with REQ headings and agreed business
+rules. The [practice requirements](input.md) are fictional rules for Paper Lantern
+Community Clinic. They don't represent a real stakeholder agreement or AI output.
+
+The [prompt](prompt.md) asks for Given/When/Then cases linked to REQ IDs. The checker
+turns those links into a traceability matrix. A reviewed set of AI test cases is
+[still pending](examples/README.md).
 
 For Claude Code, Copilot or chat, follow the [shared setup instructions](../../docs/SETUP.md#the-same-workflow-in-three-tools).
 

@@ -1,11 +1,15 @@
 # Workshop to requirements
 
-Use after a workshop when you need a draft that carries its evidence with it.
+I want to turn workshop notes into a draft where I can see what each requirement
+is based on.
 
-**Inputs:** a permitted transcript or notes, plus a versioned project brief and glossary. The [fictional input](input.md) belongs to the Paper Lantern
-Community Clinic case and was created for this exercise. It is not model output.
-The [canonical prompt](prompt.md) defines the task. **Outputs:** draft REQ headings with exact Source quotations and a separate list of open questions.
-Model examples are pending; [examples/README.md](examples/README.md) explains why.
+Start with a transcript or notes you're allowed to use, plus a project brief and
+glossary with their versions. The [practice transcript](input.md) is a fictional
+Paper Lantern Community Clinic workshop, written for this repo.
+
+The [prompt](prompt.md) asks for draft REQ headings, exact Source quotations and
+a separate list of open questions. I haven't recorded a reviewed AI example yet;
+the [example notes](examples/README.md) explain what I'll need to keep.
 
 For Claude Code, Copilot or chat, follow the [shared setup instructions](../../docs/SETUP.md#the-same-workflow-in-three-tools).
 

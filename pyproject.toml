@@ -27,5 +27,4 @@ py-modules = ["llm"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra --basetemp=.cache/pytest-tmp"
-
+addopts = "-ra"

@@ -87,5 +87,5 @@ completeness, human review or sign-off. Automated checks confirm section IDs and
 exact repeated issue text only. A person checks meaning, omissions and severity.
 
 
-Use [the manual runner](../workflows/README.md) to preserve prompt hashes, answers
-and model metadata. Human sign-off remains pending after the automated checks.
+Use [the manual runner](../workflows/README.md) to save the prompts, answers and
+model details together. Human sign-off stays pending after the checks.
