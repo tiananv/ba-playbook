@@ -1,35 +1,22 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
-  <img src="assets/banner-light.svg" alt="ba-playbook. BA workflows with AI, checked against the source." width="1200">
-</picture>
+# ba-playbook
 
-I want to use AI on BA work without it quietly making things up. This is the
-approach I'm putting together for Claude Code, Copilot and ChatGPT, with small
-checks for missing quotes, made-up section references and gaps in test links.
+How I use AI for everyday BA work. It's my prompts, the rules I stick to, and a few small checks for when the AI gets something wrong. I keep it here so I can reuse it on any project, whichever AI tool the company uses.
 
-## Where I'm up to
+## What's in here
 
-The workflows cover workshop notes, specification reviews and acceptance tests.
-I haven't recorded a reviewed example yet. My next step is to save a real AI draft,
-mark my corrections and explain my sign-off. The [worked example steps](docs/SETUP.md#record-a-worked-example)
-show what I'll need to keep.
+- [How I use AI](METHOD.md), step by step
+- [What never goes into AI](WHAT-NEVER-GOES-INTO-AI.md)
+- [Context templates](context/): a project brief, glossary and decisions log to give the AI before I ask it anything
+- Three workflows, each set up for Claude, Copilot and ChatGPT:
+  - [Workshop notes to requirements](workflows/workshop-to-requirements/README.md)
+  - [Spec review](workflows/spec-review-board/README.md), where four AI "reviewers" (tester, developer, risk and an end user) read the same spec
+  - [Requirements to test cases](workflows/requirements-to-tests/README.md)
 
-## My approach
+The practice material is a made-up community clinic, so there's nothing from work in here.
 
-```mermaid
-flowchart LR
-    A[Classify data] --> B[Use an approved tool]
-    B --> C[Give it context]
-    C --> D[Check the source]
-    D --> E[Human sign-off]
-```
+## The checks
 
-I start with [what never goes into AI](WHAT-NEVER-GOES-INTO-AI.md) and the
-[method](METHOD.md). The [context templates](context/) separate agreed rules from
-assumptions and open questions. For practice, the workflows use Paper Lantern
-Community Clinic, a fictional booking and referral service.
-
-## What the AI does / What checks it
+AI is good at sounding sure of itself, so each workflow has a small check:
 
 <!-- CHECKS:START -->
 | What the AI does | What checks it |
@@ -40,36 +27,16 @@ Community Clinic, a fictional booking and referral service.
 | Produces a draft for discussion | A person makes the final decision in every workflow. |
 <!-- CHECKS:END -->
 
-The checkers use a [simple Markdown format](checks/README.md). A real quote can
-still be attached to the wrong requirement. I still need to read the source,
-check what was missed and keep the final decision with a person.
+They only catch the obvious things. A real quote can still end up attached to the wrong requirement, so I still read the source myself.
 
-## How to run it
+## Example
 
-The [setup guide](docs/SETUP.md#how-to-run-it) covers choosing an AI tool, saving a
-draft, checking it and running the checker self-tests. Each workflow has its own
-prompt and checker command:
+Coming soon: a real AI draft next to my corrections.
 
-- [Workshop to requirements](workflows/workshop-to-requirements/README.md): keep each requirement linked to the discussion.
-- [Specification review](workflows/spec-review-board/README.md): compare concerns from different roles.
-- [Requirements to tests](workflows/requirements-to-tests/README.md): see missing links and incomplete test steps.
+## Using it
 
-## Under the hood
+The prompts work if you paste them into any AI chat. To run the checks, see [docs/SETUP.md](docs/SETUP.md).
 
-```text
-context/                     Project brief, glossary and decision templates
-workflows/                   Prompts and fictional source documents
-.claude/, .github/ and chat/  Instructions for each AI tool
-checks/                      Scripts that check drafts
-llm.py and playbook/         Scripts for running workflows and saving results
-```
+---
 
-### Data
-
-All clinic inputs were written for this repo. They are fictional practice material,
-with no employer, client or patient records. The original code and documents use
-the [MIT licence](LICENSE).
-
-## About this repo
-
-This first version was built with AI coding assistants. The results come from the code in this repo.
+Built with help from AI coding tools. [MIT licence](LICENSE).
