@@ -1,0 +1,142 @@
+"""Benchmark labelled fixtures and regenerate the README table and themed SVGs."""
+
+import json
+import os
+from collections import Counter
+from pathlib import Path
+
+from checks import quote_check, review_check, trace_check
+from checks.common import read
+from llm import digest, write_json
+from playbook.examples import WORKFLOWS
+
+ROOT = Path(__file__).resolve().parents[1]
+CHECKERS = {"quote": quote_check.check, "review": review_check.check, "trace": trace_check.check}
+PALETTES = {
+    "light": {"ink": "#1c1e22", "muted": "#5e646d", "accent": "#2f5bd0", "green": "#157a5d", "line": "#e5e1d9"},
+    "dark": {"ink": "#e8e9ec", "muted": "#a3a9b2", "accent": "#8eaaff", "green": "#62cfa9", "line": "#2c3139"},
+}
+
+
+def benchmark(fixtures: Path) -> dict:
+    """Count exact planted issue matches, misses and unexpected flags per checker."""
+    cases = json.loads(read(fixtures / "manifest.json"))
+    totals = {name: dict(planted=0, caught=0, missed=0, unexpected=0, good=0, good_flagged=0) for name in CHECKERS}
+    details = []
+    for case in cases:
+        source, output = read(fixtures / case["source"]), read(fixtures / case["output"])
+        actual = Counter((issue.code, issue.item) for issue in CHECKERS[case["checker"]](source, output))
+        expected = Counter(tuple(pair) for pair in case["expected"])
+        result = dict(planted=expected.total(), caught=(expected & actual).total(),
+                      missed=(expected - actual).total(), unexpected=(actual - expected).total(),
+                      good=int(not expected), good_flagged=int(not expected and bool(actual)))
+        for key, value in result.items():
+            totals[case["checker"]][key] += value
+        details.append({**case, "source_sha256": digest(source), "output_sha256": digest(output),
+                        "actual": [list(pair) for pair in actual.elements()], **result})
+    return {"description": "Hand-authored structural checker fixtures, not a model evaluation.",
+            "cases": details, "totals": totals}
+
+
+def chart(totals: dict, assets: Path) -> None:
+    """Render the same measured counts with transparent light and dark palettes."""
+    os.environ.setdefault("MPLCONFIGDIR", str(ROOT / ".cache" / "matplotlib"))
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import MaxNLocator
+
+    matplotlib.rcParams.update({"svg.hashsalt": "ba-playbook", "svg.fonttype": "none", "font.family": "DejaVu Sans"})
+    for theme, palette in PALETTES.items():
+        fig, ax = plt.subplots(figsize=(9, 3.4), layout="constrained")
+        names = list(totals)
+        for offset, field, label, colour in [(-0.19, "planted", "Issues planted", palette["accent"]),
+                                             (0.19, "caught", "Issues caught", palette["green"])]:
+            bars = ax.bar([index + offset for index in range(len(names))],
+                          [totals[name][field] for name in names], width=0.34, label=label, color=colour)
+            ax.bar_label(bars, color=palette["ink"], padding=4, fontsize=11)
+        ax.set_xticks(range(len(names)), ["Quote check", "Review check", "Trace check"], color=palette["ink"])
+        ax.set_ylim(0, max(row["planted"] for row in totals.values()) + 2)
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.set_ylabel("Labelled structural issues", color=palette["muted"])
+        ax.tick_params(colors=palette["muted"], length=0)
+        ax.set_title("Can the checks catch the planted mistakes?", loc="left", color=palette["ink"], pad=18, fontsize=14)
+        ax.grid(axis="y", color=palette["line"], linewidth=0.6)
+        ax.set_axisbelow(True)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+        ax.legend(frameon=False, labelcolor=palette["ink"], loc="upper left", ncols=2)
+        fig.savefig(assets / f"checker-benchmark-{theme}.svg", transparent=True,
+                    metadata={"Date": None, "Creator": "ba-playbook / matplotlib"})
+        plt.close(fig)
+
+
+def readme_section(result: dict) -> str:
+    """Build the benchmark explanation, table and picture solely from run counts."""
+    totals = result["totals"]
+    planted = sum(row["planted"] for row in totals.values())
+    caught = sum(row["caught"] for row in totals.values())
+    good = sum(row["good"] for row in totals.values())
+    flagged = sum(row["good_flagged"] for row in totals.values())
+    lines = [f"The checkers caught **{caught} of {planted} planted structural issues** across "
+             f"**{len(result['cases'])} fixture documents**. They flagged **{flagged} of {good} good documents**.", "",
+             "| Checker | Planted | Caught | Missed | Unexpected flags | Good documents flagged |",
+             "| --- | ---: | ---: | ---: | ---: | ---: |"]
+    for name, row in totals.items():
+        lines.append(f"| {name.capitalize()} | {row['planted']} | {row['caught']} | {row['missed']} | {row['unexpected']} | {row['good_flagged']} / {row['good']} |")
+    lines.extend(["", '<picture>',
+                  '  <source media="(prefers-color-scheme: dark)" srcset="assets/checker-benchmark-dark.svg">',
+                  '  <img src="assets/checker-benchmark-light.svg" alt="Planted and caught structural issues by checker; exact counts are in the table above." width="900">',
+                  '</picture>', "",
+                  "Measured by `make results` using [labelled fixtures](tests/fixtures/README.md). "
+                  "[Run details](results/checker-benchmark.json) include expected and actual issue IDs and input hashes.", "",
+                  "These small, hand-authored fixtures exercise known structural defects. This is not evidence of model "
+                  "accuracy or real-world detection rates. A quote can be real but irrelevant, a cited section can be "
+                  "misread, and a linked test can miss the behaviour."])
+    return "\n".join(lines)
+
+
+def inventory_sections(root: Path) -> dict[str, str]:
+    """Build the README tool and check tables after verifying their linked files."""
+    tools = ["| Workflow | Claude Code skill | Copilot prompt | Chat instructions |", "| --- | --- | --- | --- |"]
+    checks = ["| What the AI does | What checks it |", "| --- | --- |"]
+    descriptions = [
+        ("Drafts requirements", "quote", "Verbatim source check, then a person checks meaning and omissions."),
+        ("Reviews a specification", "review", "Section citations and repeated issue text, then a person checks the consolidation."),
+        ("Writes test cases", "trace", "Requirement links and complete steps, then a person checks behaviour and coverage."),
+    ]
+    for workflow, (action, checker, explanation) in zip(WORKFLOWS, descriptions):
+        paths = [f".claude/skills/{workflow}/SKILL.md", f".github/prompts/{workflow}.prompt.md", f"chat/{workflow}.md"]
+        for path in [*paths, f".github/skills/{workflow}/SKILL.md", f"checks/{checker}_check.py"]:
+            if not (root / path).is_file():
+                raise FileNotFoundError(f"Required packaging file is missing: {path}")
+        tools.append(f"| [{workflow}](workflows/{workflow}/README.md) | [SKILL.md]({paths[0]}) | [prompt.md]({paths[1]}) | [Paste guide]({paths[2]}) |")
+        checks.append(f"| {action} | [{checker}-check](checks/{checker}_check.py): {explanation} |")
+    checks.append("| Produces a draft for discussion | A person retains final sign-off on every workflow. |")
+    return {"TOOLS": "\n".join(tools), "CHECKS": "\n".join(checks)}
+
+
+def main() -> int:
+    """Regenerate all measured README content without making a model call."""
+    result = benchmark(ROOT / "tests" / "fixtures")
+    readme = read(ROOT / "README.md")
+    sections = {"RESULTS": readme_section(result), **inventory_sections(ROOT)}
+    for name, content in sections.items():
+        start, end = f"<!-- {name}:START -->", f"<!-- {name}:END -->"
+        if readme.count(start) != 1 or readme.count(end) != 1 or readme.index(start) > readme.index(end):
+            print(f"Results error: README must contain one ordered pair of {name} markers.")
+            return 2
+        readme = readme.split(start)[0] + start + "\n" + content + "\n" + end + readme.split(end)[1]
+    (ROOT / "results").mkdir(exist_ok=True)
+    (ROOT / "assets").mkdir(exist_ok=True)
+    write_json(ROOT / "results" / "checker-benchmark.json", result)
+    chart(result["totals"], ROOT / "assets")
+    (ROOT / "README.md").write_text(readme, encoding="utf-8")
+    for name, row in result["totals"].items():
+        print(f"{name}: planted={row['planted']} caught={row['caught']} missed={row['missed']} unexpected={row['unexpected']} good_flagged={row['good_flagged']}/{row['good']}")
+    return int(any(row["missed"] or row["unexpected"] for row in result["totals"].values()))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

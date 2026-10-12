@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=75,<81"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ba-playbook"
+version = "0.1.0"
+description = "Portable BA workflows with source and traceability checks."
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Tiana Vincent"}]
+dependencies = ["httpx>=0.28,<0.29", "matplotlib>=3.10,<3.11"]
+
+[dependency-groups]
+dev = ["pytest>=8.3,<9", "pyyaml>=6,<7"]
+
+[project.scripts]
+quote-check = "checks.quote_check:main"
+review-check = "checks.review_check:main"
+trace-check = "checks.trace_check:main"
+playbook-examples = "playbook.examples:main"
+playbook-results = "playbook.results:main"
+
+[tool.setuptools]
+packages = ["checks", "playbook"]
+py-modules = ["llm"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --basetemp=.cache/pytest-tmp"
+
