@@ -10,6 +10,7 @@ setup:
 test:
 	uv run pytest
 
+# Regenerate the README self-tests, setup tool table and benchmark details.
 results:
 	uv run playbook-results
 

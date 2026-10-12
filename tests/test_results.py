@@ -1,7 +1,11 @@
-"""Test the benchmark scoring independently of the checkers' own issue counts."""
+"""Test benchmark scoring and safe, repeatable documentation regeneration."""
 
 import json
+import re
+import shutil
 from pathlib import Path
+
+import pytest
 
 from checks.common import Issue
 from playbook import results
@@ -47,3 +51,60 @@ def test_false_positive_on_good_document_is_counted(monkeypatch):
     row = results.benchmark(FIXTURES)["totals"]["quote"]
     assert row["good_flagged"] == row["good"] and row["unexpected"] > 0
 
+
+@pytest.fixture
+def result_project(tmp_path, monkeypatch):
+    """Give the generator isolated documents and its real fixture and link inputs."""
+    root = results.ROOT
+    for folder in ("tests/fixtures", ".claude", ".github", "chat", "checks"):
+        shutil.copytree(root / folder, tmp_path / folder, ignore=shutil.ignore_patterns("__pycache__"))
+    for workflow in results.WORKFLOWS:
+        folder = tmp_path / "workflows" / workflow
+        folder.mkdir(parents=True)
+        shutil.copyfile(root / "workflows" / workflow / "README.md", folder / "README.md")
+    (tmp_path / "README.md").write_text(
+        "Overview.\n<!-- RESULTS:START -->\nstale counts\n<!-- RESULTS:END -->\n"
+        "<!-- CHECKS:START -->\nstale checks\n<!-- CHECKS:END -->\nKeep the pending example.\n")
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs/SETUP.md").write_text(
+        "Setup.\n<!-- TOOLS:START -->\nstale tools\n<!-- TOOLS:END -->\nKeep the review steps.\n")
+    monkeypatch.setattr(results, "ROOT", tmp_path)
+    return tmp_path
+
+
+def test_results_refreshes_both_documents_and_is_repeatable(result_project):
+    """Regeneration must update moved sections, preserve prose and resolve tool links."""
+    assert results.main() == 0
+    readme = (result_project / "README.md").read_text()
+    setup = (result_project / "docs/SETUP.md").read_text()
+    assert "stale" not in readme + setup
+    assert "What the AI does" in readme and "Claude Code skill" not in readme
+    assert "Claude Code skill" in setup and "What the AI does" not in setup
+    assert readme.startswith("Overview.\n") and readme.endswith("Keep the pending example.\n")
+    assert setup.startswith("Setup.\n") and setup.endswith("Keep the review steps.\n")
+    assert "not evidence of model accuracy" in readme
+    assert "<picture>" not in readme
+    for target in re.findall(r"\]\(([^)]+)\)", setup):
+        assert (result_project / "docs" / target).is_file()
+    outputs = [result_project / name for name in ("README.md", "docs/SETUP.md", "results/checker-benchmark.json")]
+    before = [path.read_bytes() for path in outputs]
+    assert results.main() == 0
+    assert [path.read_bytes() for path in outputs] == before
+    assert not (result_project / "assets").exists()
+
+
+@pytest.mark.parametrize("markers", [
+    "<!-- TOOLS:START -->",
+    "<!-- TOOLS:END -->\n<!-- TOOLS:START -->",
+    "<!-- TOOLS:START -->\n<!-- TOOLS:START -->\n<!-- TOOLS:END -->",
+])
+def test_invalid_setup_markers_leave_all_outputs_unchanged(result_project, markers, capsys):
+    """A malformed second document must not leave partially refreshed results."""
+    setup = result_project / "docs/SETUP.md"
+    setup.write_text(markers)
+    readme = (result_project / "README.md").read_bytes()
+    assert results.main() == 2
+    assert "docs/SETUP.md must contain one ordered pair of TOOLS markers" in capsys.readouterr().out
+    assert (result_project / "README.md").read_bytes() == readme
+    assert setup.read_text() == markers
+    assert not (result_project / "results").exists()

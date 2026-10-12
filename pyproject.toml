@@ -9,7 +9,7 @@ description = "Portable BA workflows with source and traceability checks."
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{name = "Tiana Vincent"}]
-dependencies = ["httpx>=0.28,<0.29", "matplotlib>=3.10,<3.11"]
+dependencies = ["httpx>=0.28,<0.29"]
 
 [dependency-groups]
 dev = ["pytest>=8.3,<9", "pyyaml>=6,<7"]
