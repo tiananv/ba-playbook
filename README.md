@@ -1,41 +1,48 @@
 # ba-playbook
 
-How I use AI for everyday BA work. It's my prompts, the rules I stick to, and a few small checks for when the AI gets something wrong. I keep it here so I can reuse it on any project, whichever AI tool the company uses.
+- Reusable AI prompts, context templates and checks for business analysis.
+- Three workflows, with instructions for Claude Code, Copilot and chat tools.
+- Fictional community clinic examples; no employer or client material.
 
-## What's in here
+## Workflows
 
-- [How I use AI](METHOD.md), step by step
-- [What never goes into AI](WHAT-NEVER-GOES-INTO-AI.md)
-- [Context templates](context/): a project brief, glossary and decisions log to give the AI before I ask it anything
-- Three workflows, each set up for Claude, Copilot and ChatGPT:
-  - [Workshop notes to requirements](workflows/workshop-to-requirements/README.md)
-  - [Spec review](workflows/spec-review-board/README.md), where four AI "reviewers" (tester, developer, risk and an end user) read the same spec
-  - [Requirements to test cases](workflows/requirements-to-tests/README.md)
+- [Workshop notes to requirements](workflows/workshop-to-requirements/README.md): draft requirements with links to source quotes.
+- [Specification review](workflows/spec-review-board/README.md): review from testing, development, risk and end-user perspectives.
+- [Requirements to test cases](workflows/requirements-to-tests/README.md): link test cases to requirements and check for missing steps.
 
-The practice material is a made-up community clinic, so there's nothing from work in here.
+## Validation results
 
-## The checks
+- **13 of 13 planted issues detected** across quote, review and traceability checks.
+- **Six valid test documents accepted**, with no unexpected warnings across the 12 test cases.
+- [Saved benchmark](results/checker-benchmark.json): fictional test documents, measuring checker behaviour rather than AI accuracy.
+- [Example datasets](tests/fixtures/README.md) · Reproduce: `uv run pytest -q tests/test_checks.py::test_labelled_fixtures`.
+- Meaning, omissions and test coverage still need human review. A real model draft with corrections is pending.
 
-AI is good at sounding sure of itself, so each workflow has a small check:
+<details>
+<summary>Checker reference</summary>
 
 <!-- CHECKS:START -->
-| What the AI does | What checks it |
-| --- | --- |
-| Drafts requirements | [quote-check](checks/quote_check.py): Matches quotes to the source. A person checks meaning and omissions. |
-| Reviews a specification | [review-check](checks/review_check.py): Checks section IDs and repeated findings. A person checks the combined review. |
-| Writes test cases | [trace-check](checks/trace_check.py): Checks requirement links and complete steps. A person checks what each test covers. |
-| Produces a draft for discussion | A person makes the final decision in every workflow. |
+
+| What the AI does                | What checks it                                                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Drafts requirements             | [quote-check](checks/quote_check.py): Matches quotes to the source. A person checks meaning and omissions.                |
+| Reviews a specification         | [review-check](checks/review_check.py): Checks section IDs and repeated findings. A person checks the combined review.    |
+| Writes test cases               | [trace-check](checks/trace_check.py): Checks requirement links and complete steps. A person checks what each test covers. |
+| Produces a draft for discussion | A person makes the final decision in every workflow.                                                                      |
+
 <!-- CHECKS:END -->
 
-They only catch the obvious things. A real quote can still end up attached to the wrong requirement, so I still read the source myself.
+</details>
 
-## Example
+## Published research — external results
 
-Coming soon: a real AI draft next to my corrections.
+- **15% more issues resolved per hour** with AI assistance in a study of 5,172 customer-support agents; benefits varied by experience and skill. This was a customer-support study, not a test of these BA workflows. [Brynjolfsson, Li and Raymond, 2025](https://academic.oup.com/qje/article/140/2/889/7990658).
 
-## Using it
+## Use
 
-The prompts work if you paste them into any AI chat. To run the checks, see [docs/SETUP.md](docs/SETUP.md).
+- [Method](METHOD.md) and [context templates](context/): project brief, glossary and decision log.
+- [Information handling](WHAT-NEVER-GOES-INTO-AI.md): what to keep out of AI tools.
+- [Setup and commands](docs/SETUP.md): run the workflows and checks.
 
 ---
 
